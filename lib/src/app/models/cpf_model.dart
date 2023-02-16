@@ -1,7 +1,7 @@
 import 'dart:math';
 
 class CpfModel {
-  String cpf;
+  final String cpf;
 
   CpfModel({required this.cpf});
 
@@ -27,9 +27,9 @@ class CpfModel {
       cpfList.add(random.nextInt(10));
     }
     var cpf = cpfList.join();
-    this.cpf = cpf;
+    var model = CpfModel(cpf: cpf);
 
-    if (validateCpf()) {
+    if (model.validateCpf()) {
       return cpf;
     }
     return generateCpf();

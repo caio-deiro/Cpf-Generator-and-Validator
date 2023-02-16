@@ -1,7 +1,8 @@
-import 'package:cpf_generator/src/app/controller/home_viewmodel.dart';
 import 'package:cpf_generator/src/shared/components/app_button.dart';
 import 'package:cpf_generator/src/shared/masks/cpf_mask.dart';
 import 'package:flutter/material.dart';
+
+import '../viewModel/viewmodel.dart';
 
 class ValidateCpfPage extends StatefulWidget {
   const ValidateCpfPage({Key? key}) : super(key: key);
@@ -11,14 +12,14 @@ class ValidateCpfPage extends StatefulWidget {
 }
 
 class _ValidateCpfPageState extends State<ValidateCpfPage> {
-  late HomeViewmodel homeController;
+  late ViewModel homeController;
 
   final formkey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
-    homeController = HomeViewmodel();
+    homeController = ViewModel();
     homeController.addListener(() {
       setState(() {});
     });
@@ -45,11 +46,14 @@ class _ValidateCpfPageState extends State<ValidateCpfPage> {
                     controller: homeController.cpfController,
                     decoration: InputDecoration(
                       label: Text('Coloque seu CPF!'),
+                      border: OutlineInputBorder(),
                     ),
                     validator: (value) {
                       if (value != null) {
                         if (value.isEmpty) {
                           return 'campo vazio!, ensira um cpf';
+                        } else if (value.contains(RegExp(r'[^0-9]'))) {
+                          return 'digitar apenas números!';
                         } else if (value.length < 11) {
                           return 'coloque um CPF com 11 digitos';
                         }
@@ -64,7 +68,16 @@ class _ValidateCpfPageState extends State<ValidateCpfPage> {
                               context: context,
                               builder: (context) {
                                 return AlertDialog(
-                                  title: Text('CPF Válido!'),
+                                  title: Text(
+                                    'CPF Válido!',
+                                    style: TextStyle(color: Colors.green),
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () => Navigator.pop(context),
+                                      child: Text('Voltar'),
+                                    )
+                                  ],
                                 );
                               });
                         } else {
@@ -105,7 +118,17 @@ class _ValidateCpfPageState extends State<ValidateCpfPage> {
                                   context: context,
                                   builder: (context) {
                                     return AlertDialog(
-                                      title: Text('CPF Válido!'),
+                                      title: Text(
+                                        'CPF Válido!',
+                                        style: TextStyle(color: Colors.green),
+                                      ),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () =>
+                                              Navigator.pop(context),
+                                          child: Text('Voltar'),
+                                        )
+                                      ],
                                     );
                                   });
                             } else {

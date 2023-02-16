@@ -1,6 +1,9 @@
-import 'package:cpf_generator/src/app/controller/home_viewmodel.dart';
+import 'package:cpf_generator/src/app/controller/cpf_controller.dart';
+import 'package:cpf_generator/src/app/presenter/presenter_cpf.dart';
 import 'package:cpf_generator/src/shared/components/app_button.dart';
 import 'package:flutter/material.dart';
+
+import '../viewModel/viewmodel.dart';
 
 class GenerateCpfPage extends StatefulWidget {
   const GenerateCpfPage({Key? key}) : super(key: key);
@@ -9,13 +12,15 @@ class GenerateCpfPage extends StatefulWidget {
   State<GenerateCpfPage> createState() => _GenerateCpfPageState();
 }
 
-class _GenerateCpfPageState extends State<GenerateCpfPage> {
-  final homeViewModel = HomeViewmodel();
+class _GenerateCpfPageState extends State<GenerateCpfPage> implements CpfView {
+  final viewModel = ViewModel();
+  late final presenter = PresenterCpf(this);
+  final controller = CpfController();
 
   @override
   void initState() {
     super.initState();
-    homeViewModel.addListener(() {
+    viewModel.addListener(() {
       setState(() {});
     });
   }
@@ -24,7 +29,9 @@ class _GenerateCpfPageState extends State<GenerateCpfPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Gerar CPF'),
+          title: const Text(
+            'Gerar CPF',
+          ),
           centerTitle: true,
         ),
         body: SafeArea(
@@ -36,14 +43,21 @@ class _GenerateCpfPageState extends State<GenerateCpfPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   AppButton(
-                    onPressed: () => homeViewModel.generateCpf(),
-                    child: Text('gerar CPF'),
+                    onPressed: () => viewModel.generateCpf(),
+                    child: Text('Gerar CPF'),
                   ),
                   SizedBox(height: 25),
-                  if (homeViewModel.showText)
-                    Text('o CPF gerado é: ${homeViewModel.generateCpf()}'),
+                  if (viewModel.showText)
+                    Text(
+                      'o CPF gerado é: ${viewModel.generateCpf()}',
+                    ),
                 ],
               ),
             )));
+  }
+
+  @override
+  void update() {
+    setState(() {});
   }
 }
