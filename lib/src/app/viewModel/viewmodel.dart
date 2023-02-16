@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:cpf_generator/src/app/models/cpf_model.dart';
 import 'package:flutter/cupertino.dart';
 
-class HomeViewmodel extends ChangeNotifier {
+class ViewModel extends ChangeNotifier {
   late CpfModel cpfModel;
 
   TextEditingController cpfController = TextEditingController();
@@ -12,15 +12,17 @@ class HomeViewmodel extends ChangeNotifier {
   bool showText = false;
 
   bool validateCpf(String cpf) {
-    cpfModel = CpfModel(cpf: cpfController.text);
+    cpfModel = CpfModel(cpf: cpf);
     return cpfModel.validateCpf();
   }
 
   String generateCpf() {
+    var result = '';
+    cpfModel = CpfModel(cpf: '');
+    result = cpfModel.generateCpf();
     showText = true;
     notifyListeners();
-    cpfModel = CpfModel(cpf: cpfController.text);
-    return cpfModel.generateCpf();
+    return result;
   }
 
   void enableButtonAfterSecondsOver() {
